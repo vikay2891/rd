@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.sabre.hs.agora</groupId>
+	<artifactId>framework</artifactId>
+	<packaging>pom</packaging>
+	<name>Agora Framework</name>
+	<description>Root POM for all project modules</description>
+	
+	<!-- Project Modules -->
+	<modules>
+		<module>agora-framework-exception</module>
+		<module>agora-framework-util</module>
+		<module>agora-framework-log</module>
+		<module>agora-framework-jpa</module>
+		<module>agora-framework-security</module>
+		<module>agora-framework-rest</module>
+		<module>agora-framework-aws</module>
+	</modules>
+
+	<parent>
+		<groupId>com.sabre.hs.agora</groupId>
+		<artifactId>agora</artifactId>
+		<version>1.0.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<properties>
+		<slf4j-log4j2-version>2.9.1</slf4j-log4j2-version>
+		<slf4j.api.version>1.7.25</slf4j.api.version>
+		<commons.logging.version>1.2</commons.logging.version>
+		<commons.lang3.version>3.5</commons.lang3.version>
+		<aspectjweaver.version>1.8.9</aspectjweaver.version>
+		<lmax.disruptor.version>3.3.7</lmax.disruptor.version>
+	</properties>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.junit.jupiter</groupId>
+						<artifactId>junit-jupiter-engine</artifactId>
+						<version>5.3.2</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<dataFile>target/jacoco.exec</dataFile>
+							<outputDirectory>target/jacoco-ut</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<systemPropertyVariables>
+						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+					</systemPropertyVariables>
+					<excludes>
+						<exclude>com/sabre/hs/agora/framework/aws/template/*</exclude>
+						<exclude>com/sabre/hs/agora/framework/rest/cors/*</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
